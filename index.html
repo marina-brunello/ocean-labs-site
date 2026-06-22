@@ -295,7 +295,7 @@ footer{background:var(--blue-dark);position:relative;overflow:hidden;padding:44p
     <li><a href="#abordagem">Abordagem</a></li>
     <li><a href="#forwhom">Para quem</a></li>
     <li><a href="#how">Como funciona</a></li>
-    <li><a href="#contact" class="nav-btn">Fale conosco</a></li>
+    <li><a href="#contact" class="nav-btn" onclick="window.gtag&&gtag('event','cta_click',{cta_local:'nav',cta_texto:'Fale conosco'})">Fale conosco</a></li>
   </ul>
 </nav>
 
@@ -309,8 +309,8 @@ footer{background:var(--blue-dark);position:relative;overflow:hidden;padding:44p
         <h1>A tecnologia das grandes empresas agora <i>cabe no seu negócio</i></h1>
         <p class="hero-sub">Desenvolvemos sites, sistemas, automações e soluções de IA que ajudam pequenas e médias empresas a operar com mais eficiência, sem precisar investir como uma grande corporação.</p>
         <div class="hero-btns">
-          <a href="#contact" class="btn-p">Quero modernizar meu negócio</a>
-          <a href="#services" class="btn-s">Ver soluções</a>
+          <a href="#contact" class="btn-p" onclick="window.gtag&&gtag('event','cta_click',{cta_local:'hero_primario',cta_texto:'Quero modernizar meu negócio'})">Quero modernizar meu negócio</a>
+          <a href="#services" class="btn-s" onclick="window.gtag&&gtag('event','cta_click',{cta_local:'hero_secundario',cta_texto:'Ver soluções'})">Ver soluções</a>
         </div>
       </div>
     </div>
@@ -677,6 +677,7 @@ async function handleSub(){
   if(!ok)return;
   const btn=document.querySelector(".fsub");
   btn.textContent="Enviando...";btn.disabled=true;
+  if(window.gtag)gtag('event','form_submit',{form_local:'contato',segmento:document.getElementById("fsg").value});
   try{
     const res=await fetch("https://api.web3forms.com/submit",{
       method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},
@@ -690,7 +691,10 @@ async function handleSub(){
       })
     });
     const data=await res.json();
-    if(data.success){document.getElementById("fwrap").style.display="none";document.getElementById("fsuccess").classList.add("on");}
+    if(data.success){
+      if(window.gtag)gtag('event','generate_lead',{form_local:'contato',segmento:document.getElementById("fsg").value});
+      document.getElementById("fwrap").style.display="none";document.getElementById("fsuccess").classList.add("on");
+    }
     else{btn.textContent="Erro ao enviar. Tente novamente.";btn.disabled=false;}
   }catch(err){btn.textContent="Erro ao enviar. Tente novamente.";btn.disabled=false;}
 }
@@ -725,6 +729,21 @@ document.querySelectorAll("section[id]").forEach(s=>obs.observe(s));
   addEventListener("scroll",()=>{if(!raf)raf=requestAnimationFrame(upd);},{passive:true});
   addEventListener("resize",()=>{if(!raf)raf=requestAnimationFrame(upd);}); upd();
 })();
+
+// Rastreamento de links do menu/rodape e cards de servico (GA4)
+document.addEventListener("click",function(ev){
+  if(!window.gtag)return;
+  var navLink=ev.target.closest(".nav-menu a:not(.nav-btn), .flinks a");
+  if(navLink){
+    gtag('event','nav_click',{link_texto:navLink.textContent.trim(),destino:navLink.getAttribute("href")});
+    return;
+  }
+  var card=ev.target.closest(".srv");
+  if(card){
+    var t=card.querySelector(".srv-title");
+    gtag('event','service_card_click',{servico:t?t.textContent.trim():""});
+  }
+},{passive:true});
 </script>
 </body>
 </html>
