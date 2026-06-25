@@ -102,6 +102,11 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .srv-tag{font-size:0.63rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--blue);margin-bottom:7px;display:block;transition:color .3s}
 .srv-examples li{font-size:0.79rem;font-weight:300;color:var(--muted);line-height:1.55;margin-bottom:4px;padding-left:12px;position:relative;transition:color .3s;list-style:none}
 .srv-examples li::before{content:"→";position:absolute;left:0;font-size:0.68rem;opacity:0.55}
+.srv-ex{display:inline-flex;align-items:center;gap:6px;color:var(--blue);font-weight:500;text-decoration:none;border-bottom:1px solid rgba(27,49,200,0.35);transition:color .3s,border-color .3s}
+.srv-ex::after{content:"PDF";font-family:"DM Mono",monospace;font-size:0.52rem;font-weight:600;letter-spacing:0.08em;background:var(--blue);color:#fff;padding:1px 5px;border-radius:4px;line-height:1.4;transition:all .3s}
+.srv-ex:hover{border-bottom-color:var(--blue)}
+.srv:hover .srv-ex{color:#fff;border-bottom-color:rgba(255,255,255,0.6)}
+.srv:hover .srv-ex::after{background:#fff;color:var(--blue)}
 
 /* MARQUEE */
 .ocean-strip{background:var(--blue-dark);padding:26px 0;overflow:hidden;position:relative}
@@ -406,7 +411,7 @@ footer{background:var(--blue-dark);position:relative;overflow:hidden;padding:44p
         <p class="srv-sub">Sequências automáticas que nutrem leads e convertem clientes enquanto você faz outra coisa.</p>
         <div class="srv-examples"><span class="srv-tag">Exemplos</span><ul>
           <li>Boas-vindas automáticas para novos leads do site</li>
-          <li>Nutrição para leads que não converteram</li>
+          <li><a class="srv-ex" href="exemplos/email-nutricao.pdf" target="_blank" rel="noopener">Nutrição para leads que não converteram</a></li>
           <li>Reativação de clientes inativos</li>
           <li>Pós-venda para upsell e fidelização</li>
           <li>Onboarding automático para novos clientes</li>
